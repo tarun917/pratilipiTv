@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 
 class ClassicComic(models.Model):
@@ -10,7 +9,7 @@ class ClassicComic(models.Model):
     description = models.TextField(blank=True)
     average_rating = models.FloatField(default=0.0)
     view_count = models.IntegerField(default=0)
-    uploader = models.ForeignKey(User, on_delete=models.CASCADE)
+    uploader = models.ForeignKey('cms.AppUser', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -35,7 +34,7 @@ class ModernComic(models.Model):
     description = models.TextField(blank=True)
     average_rating = models.FloatField(default=0.0)
     view_count = models.IntegerField(default=0)
-    uploader = models.ForeignKey(User, on_delete=models.CASCADE)
+    uploader = models.ForeignKey('cms.AppUser', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -89,16 +88,6 @@ class ComicInteraction(models.Model):
     class Meta:
         db_table = 'comic_interaction'
         constraints = [
-            models.UniqueConstraint(
-                fields=['classic_comic', 'user'],
-                condition=models.Q(modern_comic__isnull=True),
-                name='unique_classic_comic_user'
-            ),
-            models.UniqueConstraint(
-                fields=['modern_comic', 'user'],
-                condition=models.Q(classic_comic__isnull=True),
-                name='unique_modern_comic_user'
-            ),
             models.CheckConstraint(
                 check=~models.Q(classic_comic__isnull=True, modern_comic__isnull=True) & ~models.Q(classic_comic__isnull=False, modern_comic__isnull=False),
                 name='one_comic_only'

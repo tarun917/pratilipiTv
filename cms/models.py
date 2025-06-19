@@ -1,30 +1,37 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-class AppUser(models.Model):
+class AppUser(AbstractUser):
     """
     Model to store Android app signup users for PratilipiTv.
-    Contains credentials for signup process.
+    Extends AbstractUser for Django authentication compatibility.
     """
     full_name = models.CharField(
         max_length=255,
         help_text="User's full name.",
-    )
-    email = models.EmailField(
-        unique=True,
-        help_text="User's email address.",
     )
     mobile_number = models.CharField(
         max_length=15,
         unique=True,
         help_text="User's mobile number (e.g., +919876543210).",
     )
-    password = models.CharField(
-        max_length=128,
-        help_text="Hashed user password.",
-    )
     terms_accepted = models.BooleanField(
         default=False,
         help_text="Indicates if user agreed to terms and conditions.",
+    )
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='appuser_groups',
+        blank=True,
+        help_text="The groups this user belongs to.",
+        verbose_name="groups",
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='appuser_permissions',
+        blank=True,
+        help_text="Specific permissions for this user.",
+        verbose_name="user permissions",
     )
 
     class Meta:

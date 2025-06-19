@@ -1,8 +1,7 @@
-from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.db.models import Avg, Count
-from .models import ComicInteraction, ClassicComic, ModernComic
+from .models import ComicInteraction, ClassicComic, ModernComic, models
 
 @receiver([post_save, post_delete], sender=ComicInteraction)
 def update_comic_metrics(sender, instance, **kwargs):
