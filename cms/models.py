@@ -2,10 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class AppUser(AbstractUser):
-    """
-    Model to store Android app signup users for PratilipiTv.
-    Extends AbstractUser for Django authentication compatibility.
-    """
     full_name = models.CharField(
         max_length=255,
         help_text="User's full name.",
