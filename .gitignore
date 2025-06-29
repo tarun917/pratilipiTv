@@ -10,4 +10,5 @@ venv/
 .idea/
 *.log
 media/
-staticfiles/
+staticfiles/pratilipiTv_db_backup*.sql
+venv/
